@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rest_log_model {
+class Log_model {
 
   public function save($method, $url, $data = null)
   {

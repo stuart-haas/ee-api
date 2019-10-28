@@ -1,4 +1,8 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 require_once PATH_THIRD . 'rest/config.php';
 
@@ -18,17 +22,26 @@ class Rest_ext {
 
   public function route_url($session)
   {
-    ee()->load->model('rest_settings_model');
+    ee()->load->model('settings_model');
 
-    $this->settings = ee()->rest_settings_model->get();
+    $this->settings = ee()->settings_model->get();
 
     if (isset($this->settings['api_trigger']) AND $this->settings['api_key'] AND ee()->uri->segment(1) == $this->settings['api_trigger'])
     {
-      ee()->session = $session;
+      if(ee()->uri->segment(2) !== "")
+      {
+        $api = ee()->uri->segment(2).'_api';
 
-      ee()->output->set_status_header(500);
-      echo("No matching API method found '".ee()->uri->segment(2)."'");
-      
+        ee()->load->library($api);
+
+        ee()->$api->call(ee()->uri->segment(3));
+
+      } else {
+        ee()->load->library('api_lib');
+
+        ee()->api_lib->call();
+      }
+    
       die();
     }
   }

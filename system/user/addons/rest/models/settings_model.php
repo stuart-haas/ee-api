@@ -1,6 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Rest_settings_model {
+class Settings_model {
 
   public function get()
   {
